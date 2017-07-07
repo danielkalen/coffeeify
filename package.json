@@ -1,5 +1,5 @@
 {
-  "name": "coffeeify",
+  "name": "coffeeify-cached",
   "version": "2.1.0",
   "description": "browserify plugin for coffee-script with support for mixed .js and .coffee files",
   "main": "index.js",
@@ -20,9 +20,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/jnordberg/coffeeify.git"
+    "url": "git://github.com/danielkalen/coffeeify-cached.git"
   },
-  "homepage": "https://github.com/jnordberg/coffeeify",
+  "homepage": "https://github.com/danielkalen/coffeeify-cached",
   "keywords": [
     "coffee-script",
     "browserify",
@@ -32,6 +32,11 @@
     "transform"
   ],
   "contributors": [
+    {
+      "name": "Daniel Kalen",
+      "email": "d@danielkalen.com",
+      "url": "http://danielkalen.com"
+    },
     {
       "name": "James Halliday",
       "email": "mail@substack.net",
