@@ -1,7 +1,7 @@
 {
   "name": "coffeeify-cached",
   "version": "2.1.0",
-  "description": "browserify plugin for coffee-script with support for mixed .js and .coffee files",
+  "description": "browserify plugin for coffee-script with support for mixed .js and .coffee files (with compile cache)",
   "main": "index.js",
   "dependencies": {
     "coffee-script": "^1.12.0",

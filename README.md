@@ -2,6 +2,9 @@
 
 CoffeeScript browserify transform. Mix and match `.coffee` and `.js` files in the same project.
 
+## Difference
+The difference between this package and the original [coffeeify](http://ghub.io/coffeeify) is that this module caches coffeescript compilations according to the files' hashes and stores them to disk so that next time a file with the same hash will be processed re-compilation won't be needed.
+
 ## Example
 
 Given some files written in a mix of `js` and `coffee`:
