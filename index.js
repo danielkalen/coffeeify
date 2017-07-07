@@ -2,6 +2,10 @@
 var convert = require('convert-source-map');
 var path = require('path');
 var through = require('through2');
+var md5 = require('md5');
+var fs = require('fs-jetpack');
+var COFFEE_CACHE_DIR = process.env.COFFEE_CACHE_DIR ? path.resolve(process.env.COFFEE_CACHE_DIR) : path.join(__dirname,'.cache');
+fs.dir(COFFEE_CACHE_DIR);
 
 var filePattern = /\.((lit)?coffee|coffee\.md)$/;
 
@@ -46,15 +50,39 @@ ParseError.prototype.inspect = function () {
 };
 
 function compile(filename, source, options, callback) {
-    var compiled;
+    var compiled, hash, cachedFile, cachedMap, cachedContent;
     try {
-        compiled = coffee.compile(source, {
-            sourceMap: options.sourceMap,
-            inline: true,
-            bare: options.bare,
-            header: options.header,
-            literate: isLiterate(filename)
-        });
+        hash = md5(source);
+        cachedFile = path.join(COFFEE_CACHE_DIR, hash+'.js');
+        cachedMap = path.join(COFFEE_CACHE_DIR, hash+'-map.js');
+        
+        if (fs.exists(cachedFile) && (!options.sourceMap || fs.exists(cachedMap))) {
+            cachedContent = fs.read(cachedFile)
+            
+            if (options.sourceMap) {
+                compiled = {
+                    js: cachedContent,
+                    v3SourceMap: fs.read(cachedMap)
+                };
+            } else {
+                compiled = cachedContent;
+            }
+        } else {
+            compiled = coffee.compile(source, {
+                sourceMap: options.sourceMap,
+                inline: true,
+                bare: options.bare,
+                header: options.header,
+                literate: isLiterate(filename)
+            });
+            
+            if (options.sourceMap) {
+                fs.write(cachedFile, compiled.js);
+                fs.write(cachedMap, compiled.v3SourceMap);
+            } else {
+                fs.write(cachedFile, compiled);
+            }
+        }
     } catch (e) {
         var error = e;
         if (e.location) {
